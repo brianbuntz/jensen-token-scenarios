@@ -3,289 +3,276 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jensen's Token Dream: How Much Has to Come True?</title>
-<meta name="description" content="A scenario model exploring how much of Jensen Huang's $250K-per-engineer token vision would reshape AI vendor economics.">
-<meta property="og:title" content="Jensen's Token Dream: How Much Has to Come True?">
-<meta property="og:description" content="Even partial adoption of Jensen's token standard would radically alter AI vendor economics. Here's the math.">
-<meta property="og:type" content="article">
+<title>What if engineers spent $250K a year on AI tokens?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #fff; --bg2: #f5f5f4; --text: #1a1a1a; --text2: #6b6b6b;
-    --border: #e5e5e3; --green: #3d7a1c; --red: #c53030; --blue: #378ADD;
-    --orange: #D85A30; --radius: 8px;
+:root {
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Libre Franklin', -apple-system, sans-serif;
+  --ink: #1a1a1a;
+  --ink2: #555;
+  --ink3: #888;
+  --rule: #d4d4d4;
+  --bg: #fff;
+  --bar1: #1a3a5c;
+  --bar2: #2a6496;
+  --bar3: #b8d4e8;
+  --accent: #c41e1e;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg); color: var(--ink);
+  padding: 0; margin: 0;
+}
+.page {
+  max-width: 660px; margin: 0 auto;
+  padding: 2.5rem 1.5rem 2rem;
+}
+.kicker {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+h1 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--ink2);
+  line-height: 1.5;
+  margin-bottom: 1.75rem;
+}
+.rule { border: none; border-top: 2px solid var(--ink); margin-bottom: 1.5rem; }
+.rule-thin { border: none; border-top: 1px solid var(--rule); margin: 1.5rem 0; }
+
+.chart-section { margin-bottom: 0.5rem; }
+.chart-title {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.15rem;
+}
+.chart-subtitle {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--ink3);
+  margin-bottom: 1rem;
+}
+
+.bar-chart { width: 100%; }
+.bar-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 60px;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+.bar-label {
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.bar-label-sub {
+  font-size: 0.7rem;
+  color: var(--ink3);
+  font-weight: 400;
+}
+.bar-track {
+  height: 32px;
+  background: #f0f0ee;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.bar-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.context-line {
+  position: relative;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+.context-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.context-item {}
+.context-label {
+  font-size: 0.7rem;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+.context-value {
+  font-family: var(--sans);
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.context-note {
+  font-size: 0.72rem;
+  color: var(--ink3);
+  margin-top: 2px;
+}
+
+.callout {
+  margin-top: 1.75rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--accent);
+  background: #fdf6f5;
+}
+.callout p {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.callout strong { font-weight: 700; }
+
+.footnote {
+  margin-top: 1.5rem;
+  font-size: 0.68rem;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+.footnote a { color: var(--ink3); }
+
+.byline {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.75rem;
+  color: var(--ink3);
+}
+.byline a { color: var(--ink2); text-decoration: none; }
+.byline a:hover { text-decoration: underline; }
+
+@media (max-width: 540px) {
+  .page { padding: 1.5rem 1rem; }
+  h1 { font-size: 1.4rem; }
+  .bar-row {
+    grid-template-columns: 1fr;
+    margin-bottom: 18px;
+    gap: 4px;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1a1a1a; --bg2: #262626; --text: #e5e5e3; --text2: #9a9a9a;
-      --border: #3a3a3a; --green: #7bc145; --red: #e87070;
-    }
-  }
-  * { box-sizing: border-box; margin: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg); color: var(--text);
-    line-height: 1.6; padding: 2rem 1rem;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  h1 { font-size: 1.65rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.5rem; }
-  .deck {
-    font-size: 1.1rem; color: var(--text2); margin-bottom: 0.25rem; line-height: 1.5;
-  }
-  .punchline {
-    font-size: 1.05rem; font-weight: 500; font-style: italic;
-    margin-bottom: 1.5rem; padding: 0.75rem 1rem;
-    border-left: 3px solid var(--blue); background: var(--bg2);
-    border-radius: 0 var(--radius) var(--radius) 0;
-  }
-  .disclaimer {
-    font-size: 0.8rem; color: var(--text2); margin-bottom: 1.5rem;
-    padding: 0.5rem 0.75rem; border: 1px dashed var(--border); border-radius: var(--radius);
-  }
-  .stat-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .stat-box {
-    background: var(--bg2); border-radius: var(--radius); padding: 1rem;
-    text-align: center;
-  }
-  .stat-label { font-size: 0.8rem; color: var(--text2); margin-bottom: 4px; }
-  .stat-value { font-size: 1.5rem; font-weight: 500; }
-  .chart-label { font-size: 0.8rem; color: var(--text2); margin-bottom: 4px; }
-  .chart-wrap { position: relative; width: 100%; height: 300px; margin-bottom: 1.5rem; }
-  .scenario-card {
-    margin-bottom: 12px; padding: 12px 16px;
-    border: 1px solid var(--border); border-radius: var(--radius);
-  }
-  .scenario-header {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 2px;
-  }
-  .scenario-name { font-weight: 500; }
-  .scenario-total { font-size: 1.15rem; font-weight: 500; }
-  .scenario-meta { font-size: 0.78rem; color: var(--text2); margin-bottom: 10px; }
-  .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .company-box {
-    padding: 8px 10px; background: var(--bg2); border-radius: var(--radius);
-  }
-  .company-detail { font-size: 0.72rem; color: var(--text2); }
-  .company-result { font-size: 0.95rem; font-weight: 500; }
-  .breakeven-box {
-    margin-top: 2rem; padding: 1rem; background: var(--bg2);
-    border-radius: var(--radius);
-  }
-  .breakeven-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; }
-  .breakeven-body { font-size: 0.85rem; color: var(--text2); line-height: 1.7; }
-  .sources-box {
-    margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--border);
-    border-radius: var(--radius);
-  }
-  .sources-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; }
-  .sources-body { font-size: 0.78rem; color: var(--text2); line-height: 1.7; }
-  .byline { font-size: 0.8rem; color: var(--text2); margin-top: 2rem; }
-  .byline a { color: var(--blue); text-decoration: none; }
-  .byline a:hover { text-decoration: underline; }
-  @media (max-width: 480px) {
-    .stat-row { grid-template-columns: 1fr; }
-    .company-grid { grid-template-columns: 1fr; }
-    h1 { font-size: 1.35rem; }
-  }
+  .bar-value { text-align: left; }
+  .context-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="page">
 
-<h1>Jensen's Token Dream: How Much Has to Come True?</h1>
-<p class="deck">
-  Jensen Huang says he'd be "deeply alarmed" if a $500K engineer didn't use $250K in AI tokens a year. What happens to AI vendor economics if even part of that vision takes hold?
-</p>
-<p class="punchline">Jensen doesn't need his full dream to come true. He needs about a fifth of it.</p>
-<p class="disclaimer">This is a scenario model, not a forecast. Illustrative assumptions throughout.</p>
+<div class="kicker">Scenario analysis</div>
+<h1>What if high-paid engineers spent $250K a year on AI tokens?</h1>
+<p class="subtitle">Goldman Sachs says AI's economic impact has been "basically zero." Jensen Huang says companies aren't spending enough. We modeled three adoption scenarios to see what it would take to make the frontier AI labs profitable.</p>
+<hr class="rule">
 
-<div class="stat-row">
-  <div class="stat-box">
-    <div class="stat-label">U.S. software engineers</div>
-    <div class="stat-value">4.4M</div>
+<div class="chart-section">
+  <div class="chart-title">New annual token revenue, by adoption scenario</div>
+  <div class="chart-subtitle">Billions of dollars. Based on U.S. software engineer population and compensation data.</div>
+
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">
+        Jensen's literal dream
+        <div class="bar-label-sub">~150K engineers at $500K+ comp</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" id="bar1" style="width: 0%; background: var(--bar1);"></div>
+      </div>
+      <div class="bar-value">$38B</div>
+    </div>
+
+    <div class="bar-row">
+      <div class="bar-label">
+        Trickle-down adoption
+        <div class="bar-label-sub">~1.9M senior + mid-level engineers</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" id="bar2" style="width: 0%; background: var(--bar2);"></div>
+      </div>
+      <div class="bar-value">$100B</div>
+    </div>
+
+    <div class="bar-row">
+      <div class="bar-label">
+        National-scale adoption
+        <div class="bar-label-sub">~4.4M all U.S. software engineers</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" id="bar3" style="width: 0%; background: var(--bar3);"></div>
+      </div>
+      <div class="bar-value">$358B</div>
+    </div>
   </div>
-  <div class="stat-box">
-    <div class="stat-label">Jensen's token floor</div>
-    <div class="stat-value">$250K</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-label">Combined OAI + Anthropic rev.</div>
-    <div class="stat-value">~$44B</div>
-  </div>
 </div>
 
-<div class="chart-label">New annual token revenue by scenario (total addressable market)</div>
-<div class="chart-wrap">
-  <canvas id="scenarioChart"></canvas>
-</div>
-
-<div id="scenarioDetails"></div>
-
-<div class="breakeven-box">
-  <div class="breakeven-title">The breakeven question</div>
-  <div class="breakeven-body" id="breakevenBody"></div>
-</div>
-
-<div class="sources-box">
-  <div class="sources-title">Sources and assumptions</div>
-  <div class="sources-body">
-    <strong>OpenAI 2026 loss:</strong> $14B — from internal projections reported by The Information and WSJ.<br>
-    <strong>Anthropic 2026 burn:</strong> $6-8B est. — derived from Fortune/WSJ reporting. Midpoint $7B used here.<br>
-    <strong>Gross margin:</strong> 40% — Anthropic's current reported margin (TechCrunch/The Information). Company targets 50% in 2026, 77% by 2028.<br>
-    <strong>Market share:</strong> Illustrative ranges used. Actual share varies by segment — Anthropic leads U.S. enterprise API spend (~65% per Ramp data); OpenAI dominates consumer and total revenue. Splits shown are rough midpoints, not forecasts.<br>
-    <strong>Engineer population:</strong> 4.4M U.S. SWEs (Lemon.io/BLS); 1.79M BLS-counted software developers; ~150K est. at $500K+ TC (Levels.fyi Staff+ at FAANG/equivalent).<br>
-    <strong>Compensation tiers:</strong> Levels.fyi median TC $190K; FAANG senior $350K+; Staff $500-700K TC.
+<div class="context-line">
+  <div class="context-grid">
+    <div class="context-item">
+      <div class="context-label">OpenAI needs to break even</div>
+      <div class="context-value">~$78B</div>
+      <div class="context-note">in new token revenue, at 40% gross margin</div>
+    </div>
+    <div class="context-item">
+      <div class="context-label">Anthropic needs to break even</div>
+      <div class="context-value">~$58B</div>
+      <div class="context-note">in new token revenue, at 40% gross margin</div>
+    </div>
   </div>
 </div>
 
-<p class="byline">
-  By <a href="https://www.linkedin.com/in/brianbuntz/" target="_blank" rel="noopener">Brian Buntz</a>
-  &ensp;|&ensp; <a href="https://rdworldonline.com" target="_blank" rel="noopener">R&D World</a>
-</p>
+<div class="callout">
+  <p>Even <strong>Scenario 1</strong> — only the $500K+ elite — generates enough new demand to cover roughly a third of OpenAI's losses and most of Anthropic's. <strong>Jensen doesn't need his full dream to come true. He needs about a fifth of it.</strong></p>
+</div>
+
+<hr class="rule-thin">
+
+<div class="footnote">
+  <strong>Sources:</strong> OpenAI 2026 loss ($14B) from The Information / WSJ. Anthropic burn ($6–8B est.) derived from Fortune / WSJ burn-rate-as-percentage-of-revenue reporting; midpoint used. Gross margin 40% per TechCrunch / The Information; Anthropic targets 50% in 2026, 77% by 2028. Engineer population from BLS and Lemon.io. Compensation from Levels.fyi. Market share splits are illustrative midpoints, not forecasts. Anthropic leads U.S. enterprise API spend (~65% per Ramp data); OpenAI dominates consumer revenue.
+</div>
+
+<div class="byline">
+  By <a href="https://www.linkedin.com/in/brian-buntz-3a52265/" target="_blank">Brian Buntz</a> · <a href="https://rdworldonline.com" target="_blank">R&D World</a>
+</div>
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-var scenarios = [
-  {
-    label: "Jensen's literal dream",
-    subtitle: "Only $500K+ engineers get token budgets",
-    engineers: "~150K Staff+ at FAANG/equivalent",
-    calc: "150K engineers x $250K each",
-    revenue: 37.5
-  },
-  {
-    label: "Trickle-down adoption",
-    subtitle: "Proportional budgets across the org",
-    engineers: "~1.9M senior + mid-level engineers",
-    calc: "150K x $250K + 550K x $75K + 1.2M x $17.5K",
-    revenue: 100
-  },
-  {
-    label: "National-scale adoption",
-    subtitle: "If Jensen's ratio became a norm across U.S. SWEs",
-    engineers: "~4.4M all U.S. software engineers",
-    calc: "Weighted across all comp tiers",
-    revenue: 358
-  }
-];
-
-var openaiLoss = 14;
-var anthropicLoss = 7;
-var grossMargin = 0.40;
-
-// Market share: show as ranges in text, use midpoints for math
-var oaiShareMid = 0.45;
-var antShareMid = 0.30;
-
-var isDark = matchMedia('(prefers-color-scheme: dark)').matches;
-
-// Chart: total market bars (single color), no company split
-new Chart(document.getElementById('scenarioChart'), {
-  type: 'bar',
-  data: {
-    labels: scenarios.map(function(s) { return s.label; }),
-    datasets: [{
-      label: 'New token revenue',
-      data: scenarios.map(function(s) { return Math.round(s.revenue); }),
-      backgroundColor: [
-        'rgba(55, 138, 221, 0.75)',
-        'rgba(55, 138, 221, 0.85)',
-        'rgba(55, 138, 221, 0.55)'
-      ],
-      borderColor: '#378ADD',
-      borderWidth: 1,
-      borderRadius: 4,
-      maxBarThickness: 100
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: function(ctx) { return 'Total new revenue: $' + ctx.raw + 'B'; }
-        }
-      }
-    },
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: { color: isDark ? '#B4B2A9' : '#5F5E5A', font: { size: 11 }, maxRotation: 0 }
-      },
-      y: {
-        grid: { color: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' },
-        ticks: {
-          color: isDark ? '#B4B2A9' : '#5F5E5A',
-          font: { size: 12 },
-          callback: function(v) { return '$' + v + 'B'; }
-        },
-        title: {
-          display: true,
-          text: 'New annual token revenue (total market)',
-          color: isDark ? '#B4B2A9' : '#888780',
-          font: { size: 12 }
-        }
-      }
-    }
-  }
+requestAnimationFrame(function() {
+  setTimeout(function() {
+    var max = 358;
+    document.getElementById('bar1').style.width = (37.5 / max * 100) + '%';
+    document.getElementById('bar2').style.width = (100 / max * 100) + '%';
+    document.getElementById('bar3').style.width = (358 / max * 100) + '%';
+  }, 200);
 });
-
-// Scenario detail cards
-var detailsEl = document.getElementById('scenarioDetails');
-var html = '';
-scenarios.forEach(function(s, i) {
-  var oaiRev = Math.round(s.revenue * oaiShareMid * 10) / 10;
-  var antRev = Math.round(s.revenue * antShareMid * 10) / 10;
-  var oaiGross = oaiRev * grossMargin;
-  var antGross = antRev * grossMargin;
-  var oaiContrib = Math.round((oaiGross - openaiLoss) * 10) / 10;
-  var antContrib = Math.round((antGross - anthropicLoss) * 10) / 10;
-
-  html += '<div class="scenario-card">';
-  html += '<div class="scenario-header">';
-  html += '<span class="scenario-name">' + s.label + '</span>';
-  html += '<span class="scenario-total">$' + Math.round(s.revenue) + 'B</span>';
-  html += '</div>';
-  html += '<div class="scenario-meta">' + s.subtitle + '&ensp;&middot;&ensp;' + s.engineers + '&ensp;&middot;&ensp;' + s.calc + '</div>';
-
-  html += '<div class="company-grid">';
-
-  // OpenAI
-  html += '<div class="company-box">';
-  html += '<div class="company-detail">OpenAI (~40-50% share): ~$' + oaiRev + 'B new rev. at 40% margin</div>';
-  html += '<div class="company-result" style="color:' + (oaiContrib >= 0 ? 'var(--green)' : 'var(--red)') + ';">';
-  html += (oaiContrib >= 0 ? '+' : '-') + '$' + Math.abs(oaiContrib) + 'B gross profit contribution vs. reported $14B loss</div>';
-  html += '</div>';
-
-  // Anthropic
-  html += '<div class="company-box">';
-  html += '<div class="company-detail">Anthropic (~25-35% share): ~$' + antRev + 'B new rev. at 40% margin</div>';
-  html += '<div class="company-result" style="color:' + (antContrib >= 0 ? 'var(--green)' : 'var(--red)') + ';">';
-  html += (antContrib >= 0 ? '+' : '-') + '$' + Math.abs(antContrib) + 'B gross profit contribution vs. reported $7B loss</div>';
-  html += '</div>';
-
-  html += '</div></div>';
-});
-detailsEl.innerHTML = html;
-
-// Breakeven
-var oaiBreakeven = Math.round(openaiLoss / grossMargin / oaiShareMid);
-var antBreakeven = Math.round(anthropicLoss / grossMargin / antShareMid);
-var oaiPct = Math.round(oaiBreakeven / 358 * 100);
-var antPct = Math.round(antBreakeven / 358 * 100);
-
-document.getElementById('breakevenBody').innerHTML =
-  'How much new token revenue would it take to cover each company\'s reported annual loss base?<br><br>' +
-  '<strong style="color: #378ADD;">OpenAI</strong> would need roughly <strong>$' + oaiBreakeven + 'B</strong> in new token revenue to push toward operating break-even \u2014 <strong>' + oaiPct + '%</strong> of national-scale adoption. That\'s roughly halfway between Scenario 1 and 2.<br><br>' +
-  '<strong style="color: #D85A30;">Anthropic</strong> would need roughly <strong>$' + antBreakeven + 'B</strong> \u2014 <strong>' + antPct + '%</strong> of the full vision. Scenario 1 alone (~$11B to Anthropic) gets close: ~$4.5B in gross profit erases most of the reported $7B burn, on paper.<br><br>' +
-  'Even partial adoption of Jensen\'s standard would radically alter AI vendor economics.';
 </script>
 </body>
 </html>
